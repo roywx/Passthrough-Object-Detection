@@ -75,7 +75,8 @@ def findTarget(gaze_x, gaze_y, detections, labels):
     #TODO: Step 2
     for idx, detection in enumerate(detections):
         if(detection["mask"][gaze_y][gaze_x] == 1) :
-            return idx 
+            return idx
+        
     return -1
 
 
@@ -83,6 +84,12 @@ def findTarget(gaze_x, gaze_y, detections, labels):
 #output: cropped image around the target object
 def load_image_from_mask(img, mask):
     #TODO: Step 3a
+    
+    ys, xs = np.where(mask == 1)
+    x1, x2 = xs.min(), xs.max()
+    y1, y2 = ys.min(), ys.max()
+
+    crop_img = img[y1:y2+1, x1:x2+1]
 
     return crop_img
     
@@ -90,6 +97,7 @@ def load_image_from_mask(img, mask):
 #output: cropped image with transparent pixels
 def makeTransparent(detections, target_idx, img):
     #TODO: Step 3b
+    res = cv2.bitwise_and(detections[target_idx]["mask"], img)
     
     return res
 
