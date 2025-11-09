@@ -164,15 +164,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.inputsystem": {
-      "version": "1.7.0",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.uielements": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.1",
       "depth": 2,
@@ -210,6 +201,22 @@
       "depth": 2,
       "source": "registry",
       "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.sysroot": {
+      "version": "2.0.10",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.sysroot.linux-x86_64": {
+      "version": "2.0.9",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.sysroot": "2.0.10"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
@@ -254,6 +261,16 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.toolchain.win-x86_64-linux-x86_64": {
+      "version": "2.0.11",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.sysroot": "2.0.10",
+        "com.unity.sysroot.linux-x86_64": "2.0.9"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ugui": {
       "version": "1.0.0",
       "depth": 0,
@@ -270,15 +287,6 @@
       "dependencies": {
         "com.unity.ugui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.xr.core-utils": {
-      "version": "2.3.0",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.xr": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -319,18 +327,6 @@
       "source": "registry",
       "dependencies": {
         "com.unity.xr.management": "4.4.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.xr.openxr": {
-      "version": "1.11.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.inputsystem": "1.6.3",
-        "com.unity.xr.core-utils": "2.1.1",
-        "com.unity.xr.management": "4.4.0",
-        "com.unity.xr.legacyinputhelpers": "2.1.2"
       },
       "url": "https://packages.unity.com"
     },

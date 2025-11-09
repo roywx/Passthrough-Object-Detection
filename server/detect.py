@@ -73,8 +73,10 @@ def run_object_detection(model, image):
 #output: label index targeted by the gaze
 def findTarget(gaze_x, gaze_y, detections, labels):
     #TODO: Step 2
+    
     for idx, detection in enumerate(detections):
         if(detection["mask"][gaze_y][gaze_x] == 1) :
+            print("target: " + labels[detection["classIdx"]])
             return idx
         
     return -1
@@ -86,6 +88,8 @@ def load_image_from_mask(img, mask):
     #TODO: Step 3a
     
     ys, xs = np.where(mask == 1)
+    if xs.size == 0 or ys.size == 0:
+        return None
     x1, x2 = xs.min(), xs.max()
     y1, y2 = ys.min(), ys.max()
 
@@ -97,12 +101,22 @@ def load_image_from_mask(img, mask):
 #output: cropped image with transparent pixels
 def makeTransparent(detections, target_idx, img):
     #TODO: Step 3b
-    res = cv2.bitwise_and(detections[target_idx]["mask"], img)
+    mask = detections[target_idx]["mask"]
+    ys, xs = np.where(mask == 1)
+    y1, y2 = ys.min(), ys.max()
+    x1, x2 = xs.min(), xs.max()
+    
+    cropped_mask = mask[y1:y2+1, x1:x2+1]
+    
+    mask_3ch = np.stack([cropped_mask*255, cropped_mask*255, cropped_mask*255], axis=-1).astype(np.uint8)
+    res = cv2.bitwise_and(img, mask_3ch)
     
     return res
 
+
 @app.route('/objectDetection', methods=['POST'])
 def objectDetection():
+    
     real_start = time.time()
     
     if not request.data:
