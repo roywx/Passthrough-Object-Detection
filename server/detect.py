@@ -72,8 +72,10 @@ def run_object_detection(model, image):
 #input: gaze coordiantes, detections from detection model and predefined labels
 #output: label index targeted by the gaze
 def findTarget(gaze_x, gaze_y, detections, labels):
-    #TODO: Step 2
     
+    # iterate through detections and if 
+    # the object lies in our gaze position, denoted by a 1 bit
+    # print the label of the object and return its correspond idx in detections
     for idx, detection in enumerate(detections):
         if(detection["mask"][gaze_y][gaze_x] == 1) :
             print("target: " + labels[detection["classIdx"]])
@@ -85,14 +87,15 @@ def findTarget(gaze_x, gaze_y, detections, labels):
 #input: image from headset, mask of target object
 #output: cropped image around the target object
 def load_image_from_mask(img, mask):
-    #TODO: Step 3a
-    
+  
+    # get x,y coords of where our object is  
     ys, xs = np.where(mask == 1)
     if xs.size == 0 or ys.size == 0:
         return None
+    # get the corner x,y coords
     x1, x2 = xs.min(), xs.max()
     y1, y2 = ys.min(), ys.max()
-
+    #get a cropped image based on our corner x,y coords
     crop_img = img[y1:y2+1, x1:x2+1]
 
     return crop_img
@@ -100,15 +103,17 @@ def load_image_from_mask(img, mask):
 #input: detections from detection model, target label index and image from the headset
 #output: cropped image with transparent pixels
 def makeTransparent(detections, target_idx, img):
-    #TODO: Step 3b
+    #convert mask to cropped size
     mask = detections[target_idx]["mask"]
     ys, xs = np.where(mask == 1)
     y1, y2 = ys.min(), ys.max()
     x1, x2 = xs.min(), xs.max()
-    
     cropped_mask = mask[y1:y2+1, x1:x2+1]
     
+    # turn mask into 3 channels and formatted as uint8 for cv2
     mask_3ch = np.stack([cropped_mask*255, cropped_mask*255, cropped_mask*255], axis=-1).astype(np.uint8)
+    
+    # get rid of pixels in img that is not in mask
     res = cv2.bitwise_and(img, mask_3ch)
     
     return res
