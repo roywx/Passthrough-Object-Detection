@@ -110,11 +110,13 @@ def makeTransparent(detections, target_idx, img):
     x1, x2 = xs.min(), xs.max()
     cropped_mask = mask[y1:y2+1, x1:x2+1]
     
-    # turn mask into 3 channels and formatted as uint8 for cv2
-    mask_3ch = np.stack([cropped_mask*255, cropped_mask*255, cropped_mask*255], axis=-1).astype(np.uint8)
-    
-    # get rid of pixels in img that is not in mask
-    res = cv2.bitwise_and(img, mask_3ch)
+    # get BGR channels
+    b, g, r = cv2.split(img)
+    # get alphas, where mask is 1 we want alpha to be 255 (opaque)
+    alpha = (cropped_mask * 255).astype(np.uint8)
+
+    # combine channels to create BGRA image
+    res = cv2.merge([b, g, r, alpha])
     
     return res
 
